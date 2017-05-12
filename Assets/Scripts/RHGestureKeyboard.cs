@@ -80,7 +80,7 @@ public class RabbitHoleGestureKeyboard {
 			where
 				(
 				   word[0] == path[0] && 
-				   word[word.Length - 1] == path[path.Length - 1] &&
+				   //word[word.Length - 1] == path[path.Length - 1] &&
 				   match(path, word) &&
 				   word.Length >= minLength
 				)
@@ -92,11 +92,19 @@ public class RabbitHoleGestureKeyboard {
 		return suggestions;
 	}
 
-	static void Main(string[] args) {
+	private void test() {
 		RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard("../Resources/dictionary.txt");
-		List<string> suggestions = RHGK.getSuggestions("wertyuioiuytrtghjklkjhgfd");
-		foreach(string sugg in suggestions) {
-			System.Console.WriteLine(sugg);
+		string finalPath = "bvcxasdfttrewr";
+		System.Text.StringBuilder charPath = new System.Text.StringBuilder();
+		for (int i = 0; i < finalPath.Length; i++) {
+			charPath.Append(finalPath[i]);
+			List<string> suggestions = RHGK.getSuggestions(charPath.ToString());
+			System.Console.Write("[");
+			foreach(string sugg in suggestions) {
+				System.Console.Write(" " + sugg + " ");
+			}
+			System.Console.Write("]");
+			System.Console.WriteLine();
 		}
 	}
 
