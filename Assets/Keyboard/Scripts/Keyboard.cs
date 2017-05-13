@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic; 
 
 namespace Normal.UI {
     public class Keyboard : MonoBehaviour {
@@ -31,6 +32,8 @@ namespace Normal.UI {
         // Helpers for gesture-based input
         private KeyboardKey prevKey = null;
         private string KeySequence = "";
+        //private List<string> wordSequence = new List<string>();
+        private bool isRightTrigger = false;
 
         void Awake() {
             _mallets = GetComponentsInChildren<KeyboardMallet>(true);
@@ -41,6 +44,30 @@ namespace Normal.UI {
 
             foreach (KeyboardKey key in _keys)
                 key._keyboard = this;
+        }
+
+        void Update()
+        {
+            // is right trigger down? 
+            float rightTriggerVal = OVRInput.Get(OVRInput.RawAxis1D.RIndexTrigger);
+            if (rightTriggerVal > 0.35f) // passes (somewhat arbitrary) float value threshold 
+            {
+                isRightTrigger = true;
+            }
+            else
+            {
+                // releasing trigger 
+                if (isRightTrigger) // check previous value 
+                {
+                    // start new word 
+                    //wordSequence.Add(KeySequence);
+                    //Debug.Log(wordSequence);
+                    Debug.Log(KeySequence);
+                    KeySequence = "";
+                }
+
+                isRightTrigger = false; 
+            }
         }
 
         // Internal
@@ -58,9 +85,7 @@ namespace Normal.UI {
                 prevKey = key;
 
                 // log keys 
-                Debug.Log(key.character);
                 KeySequence += key.character;
-                Debug.Log(KeySequence);
 
             }
 
@@ -138,4 +163,5 @@ namespace Normal.UI {
             _layout = layout;
         }
     }
+
 }
