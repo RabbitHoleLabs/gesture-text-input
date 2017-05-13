@@ -5,8 +5,13 @@ using System.IO;
 public class RabbitHoleGestureKeyboard {
 
 	public static string[] KEYBOARD_LAYOUT = new string[] {"qwertyuiop", "asdfghjkl", "zxcvbnm"};
+    private List<string> WORDS = new List<string>();
+    
+    public RabbitHoleGestureKeyboard(string fileName) {
+        populateWords(fileName);       
+    }
 
-	public static bool match(string path, string word) {
+	private bool match(string path, string word) {
 		if (path.Length < word.Length) {
 			return false;
 		}
@@ -25,7 +30,7 @@ public class RabbitHoleGestureKeyboard {
 	}
 
 	// Handles lower case, single character on keyboard, as string
-	public static int getRow(char c) {
+	private int getRow(char c) {
 		string s = c.ToString();
 		for (int i = 0; i < KEYBOARD_LAYOUT.Length; i++) {
 			if (KEYBOARD_LAYOUT[i].Contains(s)) {
@@ -35,7 +40,7 @@ public class RabbitHoleGestureKeyboard {
 		return -1;
 	}
 
-	public static string compressSequence(string sequence) {
+	private string compressSequence(string sequence) {
 		if (sequence.Length == 0) {
 			return string.Empty;
 		}
@@ -51,7 +56,7 @@ public class RabbitHoleGestureKeyboard {
 	}
 
 	// Original code subtracts 3 from return result
-	public static int getMinWordLength(string path) {
+	private int getMinWordLength(string path) {
 		System.Text.StringBuilder sb = new System.Text.StringBuilder();
 		for (int i = 0; i < path.Length; i++) {
 			sb.Append(getRow(path[i]));
@@ -60,24 +65,22 @@ public class RabbitHoleGestureKeyboard {
 		return compression.Length - 3;
 	}
 
-	public static List<string> populateWords(string fileName) {
-		List<string> words = new List<string>();
+	private void populateWords(string fileName) {
 		using (StreamReader sr = new StreamReader(fileName)) {
 			while (!sr.EndOfStream) {
-				words.Add(sr.ReadLine());
+				this.WORDS.Add(sr.ReadLine());
 			}
 		}	
-		return words;
 	}
 
-	public static List<string> getSuggestions(string path, ref List<string> words) {
+	public List<string> getSuggestions(string path) {
 		int minLength = getMinWordLength(path);
 		var filter = 
-			from word in words
+			from word in this.WORDS
 			where
 				(
 				   word[0] == path[0] && 
-				   word[word.Length - 1] == path[path.Length - 1] &&
+				   //word[word.Length - 1] == path[path.Length - 1] &&
 				   match(path, word) &&
 				   word.Length >= minLength
 				)
@@ -89,11 +92,19 @@ public class RabbitHoleGestureKeyboard {
 		return suggestions;
 	}
 
-	static void Main(string[] args) {
-		List<string> words = populateWords("../Resources/dictionary.txt");
-		List<string> suggestions = getSuggestions("wertyuioiuytrtghjklkjhgfd", ref words);
-		foreach(string sugg in suggestions) {
-			System.Console.WriteLine(sugg);
+	private void test() {
+		RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard("../Resources/dictionary.txt");
+		string finalPath = "bvcxasdfttrewr";
+		System.Text.StringBuilder charPath = new System.Text.StringBuilder();
+		for (int i = 0; i < finalPath.Length; i++) {
+			charPath.Append(finalPath[i]);
+			List<string> suggestions = RHGK.getSuggestions(charPath.ToString());
+			System.Console.Write("[");
+			foreach(string sugg in suggestions) {
+				System.Console.Write(" " + sugg + " ");
+			}
+			System.Console.Write("]");
+			System.Console.WriteLine();
 		}
 	}
 
