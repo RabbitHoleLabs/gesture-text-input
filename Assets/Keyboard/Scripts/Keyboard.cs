@@ -31,20 +31,14 @@ namespace Normal.UI {
         public  Layout  layout { get { return _layout; } set { SetLayout(value); } }
 
         // Helpers for gesture-based input
+        public TextAsset dictFile; 
         private KeyboardKey prevKey = null;
         private string KeySequence = "";
         //private List<string> wordSequence = new List<string>();
         private bool isRightTrigger = false;
 
         void Awake() {
-            Debug.Log(new DirectoryInfo("./Resources/dictionary.txt").FullName);
-            Debug.Log(new DirectoryInfo("./Resources").Exists);
-
-            TextAsset dictFile = (TextAsset)Resources.Load("dictionary.txt", typeof(TextAsset));
-            Debug.Log(dictFile);
-            Debug.Log(dictFile.text);
-
-            RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard("./Resources/dictionary.txt");
+            RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard(dictFile.text);
             string finalPath = "bvcxasdfttrewr";
             List<string> suggestions = RHGK.getSuggestions(finalPath);
             string output = string.Join(",", suggestions.ToArray());

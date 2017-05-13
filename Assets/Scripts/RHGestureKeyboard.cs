@@ -1,17 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Text.RegularExpressions;
 
 public class RabbitHoleGestureKeyboard {
 
 	public static string[] KEYBOARD_LAYOUT = new string[] {"qwertyuiop", "asdfghjkl", "zxcvbnm"};
-    private List<string> WORDS = new List<string>();
+    private List<string> WORDS;
     
-    public RabbitHoleGestureKeyboard(string fileName) {
-        populateWords(fileName);       
+    public RabbitHoleGestureKeyboard(string dict) {
+        string[] dictLines = Regex.Split(dict, "\n|\r|\r\n");
+        WORDS = new List<string>(dictLines);
     }
 
-	private bool match(string path, string word) {
+    private bool match(string path, string word) {
 		if (path.Length < word.Length) {
 			return false;
 		}
@@ -63,14 +65,6 @@ public class RabbitHoleGestureKeyboard {
 		}
 		string compression = compressSequence(sb.ToString());
 		return compression.Length - 3;
-	}
-
-	private void populateWords(string fileName) {
-		using (StreamReader sr = new StreamReader(fileName)) {
-			while (!sr.EndOfStream) {
-				this.WORDS.Add(sr.ReadLine());
-			}
-		}	
 	}
 
 	public List<string> getSuggestions(string path) {
