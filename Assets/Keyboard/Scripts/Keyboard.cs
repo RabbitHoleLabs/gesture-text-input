@@ -28,6 +28,9 @@ namespace Normal.UI {
         private Layout _layout = Layout.Letters;
         public  Layout  layout { get { return _layout; } set { SetLayout(value); } }
 
+        // Helpers for gesture-based input
+        private KeyboardKey prevKey = null; 
+
         void Awake() {
             _mallets = GetComponentsInChildren<KeyboardMallet>(true);
             _keys    = GetComponentsInChildren<KeyboardKey>(true);
@@ -44,6 +47,14 @@ namespace Normal.UI {
             // Did we hit the key for another keyboard?
             if (key._keyboard != this)
                 return;
+
+            // Gesture Mode: Don't trigger the same key twice
+            GameObject grandparent = key.transform.parent.gameObject.transform.parent.gameObject;
+            bool isLetter = grandparent == _letters;
+            bool isNumber = grandparent == _numbers;
+            if (key == prevKey && (isLetter || isNumber))
+                return;
+            prevKey = key;
 
             // Trigger key press animation
             key.KeyPressed();
