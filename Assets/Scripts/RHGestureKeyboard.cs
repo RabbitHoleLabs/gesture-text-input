@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 public class RabbitHoleGestureKeyboard {
 
@@ -11,6 +12,8 @@ public class RabbitHoleGestureKeyboard {
     public RabbitHoleGestureKeyboard(string dict) {
         string[] dictLines = Regex.Split(dict, "\n|\r|\r\n");
         WORDS = new List<string>(dictLines);
+        for (int i=0; i<WORDS.Count; i++)
+            Debug.Log(WORDS[i]);
     }
 
     private bool match(string path, string word) {

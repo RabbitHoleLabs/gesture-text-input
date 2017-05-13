@@ -38,13 +38,11 @@ namespace Normal.UI {
         private bool isRightTrigger = false;
 
         void Awake() {
-            RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard(dictFile.text);
-            string finalPath = "bvcxasdfttrewr";
-            List<string> suggestions = RHGK.getSuggestions(finalPath);
-            string output = string.Join(",", suggestions.ToArray());
-            Debug.Log(output);
-
-
+            //RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard(dictFile.text);
+            //string finalPath = "bvcxasdfttrewr";
+            //List<string> suggestions = RHGK.getSuggestions(finalPath);
+            //string output = string.Join(",", suggestions.ToArray());
+            //Debug.Log(output);
 
             _mallets = GetComponentsInChildren<KeyboardMallet>(true);
             _keys    = GetComponentsInChildren<KeyboardKey>(true);
