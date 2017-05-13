@@ -93,7 +93,7 @@ public class RabbitHoleGestureKeyboard {
 	}
 
 	private void test() {
-		RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard("../Resources/dictionary.txt");
+		RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard("dictionary.txt");
 		string finalPath = "bvcxasdfttrewr";
 		System.Text.StringBuilder charPath = new System.Text.StringBuilder();
 		for (int i = 0; i < finalPath.Length; i++) {

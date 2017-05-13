@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using System.IO;
 
 namespace Normal.UI {
     public class Keyboard : MonoBehaviour {
@@ -36,6 +37,21 @@ namespace Normal.UI {
         private bool isRightTrigger = false;
 
         void Awake() {
+            Debug.Log(new DirectoryInfo("./Resources/dictionary.txt").FullName);
+            Debug.Log(new DirectoryInfo("./Resources").Exists);
+
+            TextAsset dictFile = (TextAsset)Resources.Load("dictionary.txt", typeof(TextAsset));
+            Debug.Log(dictFile);
+            Debug.Log(dictFile.text);
+
+            RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard("./Resources/dictionary.txt");
+            string finalPath = "bvcxasdfttrewr";
+            List<string> suggestions = RHGK.getSuggestions(finalPath);
+            string output = string.Join(",", suggestions.ToArray());
+            Debug.Log(output);
+
+
+
             _mallets = GetComponentsInChildren<KeyboardMallet>(true);
             _keys    = GetComponentsInChildren<KeyboardKey>(true);
 
