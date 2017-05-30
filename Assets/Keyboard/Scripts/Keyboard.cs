@@ -38,7 +38,10 @@ namespace Normal.UI {
         private bool isRightTrigger = false;
 
         void Awake() {
-            //RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard(dictFile.text);
+
+            RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard(dictFile.text);
+
+            //Test Code
             //string finalPath = "bvcxasdfttrewr";
             //List<string> suggestions = RHGK.getSuggestions(finalPath);
             //string output = string.Join(",", suggestions.ToArray());

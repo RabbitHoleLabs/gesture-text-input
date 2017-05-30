@@ -7,13 +7,20 @@ using UnityEngine;
 public class RabbitHoleGestureKeyboard {
 
 	public static string[] KEYBOARD_LAYOUT = new string[] {"qwertyuiop", "asdfghjkl", "zxcvbnm"};
-    private List<string> WORDS;
-    
+    private List<string> WORDS = new List<string>();
+
     public RabbitHoleGestureKeyboard(string dict) {
-        string[] dictLines = Regex.Split(dict, "\n|\r|\r\n");
-        WORDS = new List<string>(dictLines);
-        for (int i=0; i<WORDS.Count; i++)
-            Debug.Log(WORDS[i]);
+
+        using (StringReader sr = new StringReader(dict))
+        {
+            string line = sr.ReadLine();
+            while (line != null)
+            {
+                this.WORDS.Add(line);
+                line = sr.ReadLine();
+            }
+        }
+
     }
 
     private bool match(string path, string word) {
@@ -71,38 +78,21 @@ public class RabbitHoleGestureKeyboard {
 	}
 
 	public List<string> getSuggestions(string path) {
+        Debug.Log(path);
 		int minLength = getMinWordLength(path);
-		var filter = 
-			from word in this.WORDS
-			where
-				(
-				   word[0] == path[0] && 
-				   //word[word.Length - 1] == path[path.Length - 1] &&
-				   match(path, word) &&
-				   word.Length >= minLength
-				)
-			select word;
-		List<string> suggestions = new List<string>();
-		foreach(string w in filter) {
-			suggestions.Add(w);
-		}
+
+        var filter =
+            from word in this.WORDS
+            where
+                (
+                         //word[0] == path[0] &&
+                         word[word.Length - 1] == path[path.Length - 1] &&
+                         match(path, word) &&
+                   word.Length >= minLength
+                )
+            select word;
+        List<string> suggestions = filter.ToList();
+
 		return suggestions;
 	}
-
-	private void test() {
-		RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard("dictionary.txt");
-		string finalPath = "bvcxasdfttrewr";
-		System.Text.StringBuilder charPath = new System.Text.StringBuilder();
-		for (int i = 0; i < finalPath.Length; i++) {
-			charPath.Append(finalPath[i]);
-			List<string> suggestions = RHGK.getSuggestions(charPath.ToString());
-			System.Console.Write("[");
-			foreach(string sugg in suggestions) {
-				System.Console.Write(" " + sugg + " ");
-			}
-			System.Console.Write("]");
-			System.Console.WriteLine();
-		}
-	}
-
 }
