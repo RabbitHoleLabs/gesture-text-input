@@ -31,21 +31,17 @@ namespace Normal.UI {
         public  Layout  layout { get { return _layout; } set { SetLayout(value); } }
 
         // Helpers for gesture-based input
-        public TextAsset dictFile; 
+
+        public TextAsset dictFile;
+        private RabbitHoleGestureKeyboard RHGK;
+
         private KeyboardKey prevKey = null;
         private string KeySequence = "";
         //private List<string> wordSequence = new List<string>();
         private bool isRightTrigger = false;
 
         void Awake() {
-
-            RabbitHoleGestureKeyboard RHGK = new RabbitHoleGestureKeyboard(dictFile.text);
-
-            //Test Code
-            //string finalPath = "bvcxasdfttrewr";
-            //List<string> suggestions = RHGK.getSuggestions(finalPath);
-            //string output = string.Join(",", suggestions.ToArray());
-            //Debug.Log(output);
+            RHGK = new RabbitHoleGestureKeyboard(dictFile.text);
 
             _mallets = GetComponentsInChildren<KeyboardMallet>(true);
             _keys    = GetComponentsInChildren<KeyboardKey>(true);
@@ -74,6 +70,11 @@ namespace Normal.UI {
                     //wordSequence.Add(KeySequence);
                     //Debug.Log(wordSequence);
                     Debug.Log(KeySequence);
+                    List<string> suggestions = this.RHGK.getSuggestions(KeySequence);
+                    string output = string.Join(",", suggestions.ToArray());
+                    Debug.Log(output);
+
+
                     KeySequence = "";
                 }
 
