@@ -60,6 +60,7 @@ namespace Normal.UI {
             if (rightTriggerVal > 0.35f) // passes (somewhat arbitrary) float value threshold 
             {
                 isRightTrigger = true;
+
             }
             else
             {
@@ -70,12 +71,14 @@ namespace Normal.UI {
                     //wordSequence.Add(KeySequence);
                     //Debug.Log(wordSequence);
                     Debug.Log(KeySequence);
-                    List<string> suggestions = this.RHGK.getSuggestions(KeySequence);
-                    string output = string.Join(",", suggestions.ToArray());
-                    Debug.Log(output);
+                    if (KeySequence.Length > 0)
+                    {
+                        List<string> suggestions = this.RHGK.getSuggestions(KeySequence);
+                        string output = string.Join(",", suggestions.ToArray());
+                        Debug.Log(output);
+                        KeySequence = "";
+                    }
 
-
-                    KeySequence = "";
                 }
 
                 isRightTrigger = false; 

@@ -85,7 +85,7 @@ public class RabbitHoleGestureKeyboard {
             from word in this.WORDS
             where
                 (
-                         //word[0] == path[0] &&
+                         word[0] == path[0] &&
                          word[word.Length - 1] == path[path.Length - 1] &&
                          match(path, word) &&
                    word.Length >= minLength
